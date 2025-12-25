@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>圣诞祝福</title>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: linear-gradient(135deg, #0a0a2a, #1a0033);
+    color: #fff;
+    font-family: "Microsoft YaHei", Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* 全屏雪花背景 */
+#snowCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.title {
+    font-size: 2.8rem;
+    margin-bottom: 25px;
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    animation: glow 2s infinite alternate, float 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+    100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* 心形容器样式 - 使用merry(4).html中的样式 */
+.heart-container {
+    margin: 30px auto;
+    width: fit-content;
+    background: rgba(255, 51, 102, 0.15);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+    animation: float 4s ease-in-out infinite;
+    border: 2px solid rgba(255, 51, 102, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.heart-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,51,102,0.1) 0%, rgba(255,51,102,0) 70%);
+    z-index: 0;
+}
+
+/* 心形文字样式 - 保持merry(4).html中的格式 */
+.heart-text {
+    font-family: "Microsoft YaHei", "SimHei", monospace;
+    font-size: 22px;
+    line-height: 1.8;
+    color: #ff3366;
+    text-shadow: 0 0 10px rgba(255, 51, 102, 0.8);
+    white-space: pre;
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+    z-index: 1;
+    animation: heartbeat 2s infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.decoration {
+    margin: 30px 0;
+    color: #FFD700;
+    font-size: 1.5rem;
+    letter-spacing: 5px;
+    animation: twinkle 1.5s infinite alternate;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+.tree-container {
+    margin: 30px auto;
+    position: relative;
+    display: inline-block;
+}
+
+#treeCanvas {
+    display: block;
+    margin: 0 auto;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+    border: 2px solid rgba(50, 205, 50, 0.3);
+    animation: pulse 4s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); }
+    100% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.4), 0 0 60px rgba(50, 205, 50, 0.3); }
+}
+
+.blessing-container {
+    margin: 20px auto;
+    max-width: 600px;
+    min-height: 80px;
+    position: relative;
+}
+
+.blessing {
+    margin: 15px auto;
+    padding: 15px 20px;
+    background: linear-gradient(45deg, rgba(255,51,102,0.2), rgba(255,153,102,0.2));
+    border-radius: 15px;
+    animation: fadeIn 0.8s ease-out, float 3s ease-in-out infinite;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    font-size: 1.2rem;
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+}
+
+.blessing::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.button {
+    background: linear-gradient(45deg, #ff3366, #ff9966);
+    border: none;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255,51,102,0.3);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+    z-index: -1;
+}
+
+.button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(255,51,102,0.5);
+}
+
+.button:hover::before {
+    left: 100%;
+}
+
+.button:active {
+    transform: translateY(0);
+}
+
+.footer {
+    margin-top: 30px;
+    color: #aaa;
+    font-size: 1rem;
+    padding: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    animation: fadeIn 1.5s ease-out;
+}
+
+/* CSS雪花效果 */
+.snowflake {
+    position: fixed;
+    color: white;
+    font-size: 1.2rem;
+    opacity: 0.8;
+    animation: snowfall linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes snowfall {
+    0% {
+        transform: translateY(-100px) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.9;
+    }
+    90% {
+        opacity: 0.9;
+    }
+    100% {
+        transform: translateY(100vh) translateX(20px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* 星星效果 */
+.star {
+    position: fixed;
+    color: #FFD700;
+    animation: twinkle 2s infinite alternate;
+    font-size: 1.5rem;
+    z-index: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .title { font-size: 2.2rem; }
+    .heart-text { font-size: 18px; }
+    .blessing { font-size: 1.1rem; }
+    .button { font-size: 1rem; padding: 10px 20px; }
+}
+
+@media (max-width: 480px) {
+    .title { font-size: 1.8rem; }
+    .heart-text { font-size: 16px; }
+    .blessing { font-size: 1rem; }
+    .button-container { gap: 10px; }
+}
+</style>
+</head>
+
+<body>
+<!-- 全屏雪花Canvas -->
+<canvas id="snowCanvas"></canvas>
+
+<div class="container">
+    <h1 class="title">🎄 圣诞快乐 🎄</h1>
+
+    <!-- 心形 - 使用merry(4).html中的样式 -->
+    <div class="heart-container">
+        <span class="heart-text">
+　　　　 　　.★ * ★..
+　　.*★　*.　*..*　　　★
+　　★　　　　　      　 ★
+　　'*. *'　 ⋆ 𝗠𝙚𝗿𝗿𝘆 𝗖𝗵𝗿𝗶𝘀𝘁𝗺𝗮𝘀𖠋𖠋𖠋⋆🎄
+　　　 '★.　　        ★'
+　　　　 　　'*..★
+        </span>
+    </div>
+
+    <div class="decoration">✦ • ━━━━━ • ✦ • ━━━━━ • ✦</div>
+
+    <!-- Canvas 树容器 -->
+    <div class="tree-container">
+        <canvas id="treeCanvas" width="400" height="500"></canvas>
+    </div>
+
+    <div class="decoration">❄️・。.・°・❄️・。.・°・❄️</div>
+
+    <!-- 祝福容器 -->
+    <div class="blessing-container" id="blessingBox"></div>
+
+    <div class="button-container">
+        <button class="button" onclick="showAllBlessings()">显示全部祝福</button>
+        <button class="button" onclick="showRandomBlessing()">随机祝福</button>
+        <button class="button" onclick="resetDecorations()">重新装饰</button>
+        <button class="button" onclick="addSparkles()">添加星光</button>
+    </div>
+
+    <div class="footer">🎅 祝您圣诞快乐，新年快乐！ 🎅</div>
+</div>
+
+<script>
+/* ================= 祝福系统 ================= */
+const blessings = [
+    "🎅 圣诞快乐，新年快乐！愿你健康平安，幸福美满！",
+    "🎁 愿这个圣诞季带给你无尽的欢乐和温暖的回忆！",
+    "✨ 愿梦想成真，愿希望之光永远照亮你的道路！",
+    "❤️ 愿爱与温暖常伴你左右，愿家人朋友永远健康快乐！",
+    "🌟 愿生活充满光芒，愿每一天都如圣诞般美好！",
+    "🍎 愿平安喜乐与你同在，愿来年更加精彩！",
+    "🎄 愿圣诞的钟声为你带来好运，愿新年的阳光为你带来希望！",
+    "🦌 愿你的心中充满感恩，愿你的生活充满奇迹！"
+];
+
+let blessingIndex = 0;
+let blessingInterval = null;
+
+function showAllBlessings() {
+    const box = document.getElementById("blessingBox");
+    box.innerHTML = "";
+    blessingIndex = 0;
+    
+    clearInterval(blessingInterval);
+    
+    // 播放祝福音效
+    playSound('bell');
+    
+    blessingInterval = setInterval(() => {
+        if (blessingIndex >= blessings.length) {
+            clearInterval(blessingInterval);
+            // 全部显示完成后播放完成音效
+            playSound('complete');
+            return;
+        }
+        
+        const msg = blessings[blessingIndex];
+        const d = document.createElement("div");
+        d.className = "blessing";
+        d.textContent = msg;
+        d.style.animationDelay = `${blessingIndex * 0.2}s`;
+        
+        // 为每条祝福添加随机颜色
+        const colors = ['#FF3366', '#FF9966', '#FFD700', '#32CD32', '#3399FF', '#9966FF'];
+        d.style.color = colors[blessingIndex % colors.length];
+        d.style.borderColor = colors[blessingIndex % colors.length];
+        
+        box.appendChild(d);
+        
+        // 滚动到最新祝福
+        box.scrollTop = box.scrollHeight;
+        
+        // 播放显示音效
+        playSound('pop');
+        
+        blessingIndex++;
+    }, 800);
+}
+
+function showRandomBlessing() {
+    const box = document.getElementById("blessingBox");
+    const msg = blessings[Math.floor(Math.random() * blessings.length)];
+    const d = document.createElement("div");
+    d.className = "blessing";
+    d.textContent = msg;
+    box.innerHTML = "";
+    box.appendChild(d);
+    
+    // 播放音效
+    playSound('pop');
+    
+    glowBoost = 1.0;
+}
+
+/* ================= 全屏雪花系统 ================= */
+const snowCanvas = document.getElementById("snowCanvas");
+const snowCtx = snowCanvas.getContext("2d");
+
+// 设置Canvas大小为全屏
+function resizeSnowCanvas() {
+    snowCanvas.width = window.innerWidth;
+    snowCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeSnowCanvas);
+resizeSnowCanvas();
+
+// 创建更多雪花
+const snowflakes = [];
+const snowCount = 250; // 250个雪花
+
+for (let i = 0; i < snowCount; i++) {
+    snowflakes.push({
+        x: Math.random() * snowCanvas.width,
+        y: Math.random() * snowCanvas.height,
+        r: Math.random() * 3 + 1,
+        speed: Math.random() * 0.8 + 0.3,
+        swing: Math.random() * 2 - 1,
+        swingSpeed: Math.random() * 0.03 + 0.01,
+        opacity: Math.random() * 0.6 + 0.4
+    });
+}
+
+function updateSnow() {
+    snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+    
+    snowflakes.forEach(snow => {
+        // 更新位置
+        snow.y += snow.speed;
+        snow.x += Math.sin(Date.now() * 0.001 * snow.swingSpeed) * snow.swing;
+        
+        // 如果雪花超出屏幕，重置到顶部
+        if (snow.y > snowCanvas.height) {
+            snow.y = -10;
+            snow.x = Math.random() * snowCanvas.width;
+        }
+        
+        // 绘制雪花
+        snowCtx.beginPath();
+        snowCtx.arc(snow.x, snow.y, snow.r, 0, Math.PI * 2);
+        snowCtx.fillStyle = `rgba(255, 255, 255, ${snow.opacity})`;
+        snowCtx.fill();
+        
+        // 添加雪花的星形效果
+        for (let i = 0; i < 6; i++) {
+            const angle = (i * Math.PI) / 3;
+            const dx = Math.cos(angle) * snow.r * 1.5;
+            const dy = Math.sin(angle) * snow.r * 1.5;
+            
+            snowCtx.beginPath();
+            snowCtx.moveTo(snow.x, snow.y);
+            snowCtx.lineTo(snow.x + dx, snow.y + dy);
+            snowCtx.strokeStyle = `rgba(255, 255, 255, ${snow.opacity * 0.7})`;
+            snowCtx.lineWidth = 1;
+            snowCtx.stroke();
+        }
+    });
+    
+    requestAnimationFrame(updateSnow);
+}
+updateSnow();
+
+/* ================= 音效系统 ================= */
+function playSound(type) {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        switch(type) {
+            case 'bell':
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                break;
+            case 'pop':
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                break;
+            case 'complete':
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                break;
+        }
+        
+        oscillator.start();
+        setTimeout(() => oscillator.stop(), 500);
+    } catch (e) {
+        // 音频上下文不可用，忽略
+    }
+}
+
+/* ================= Canvas 圣诞树系统 ================= */
+const canvas = document.getElementById("treeCanvas");
+const ctx = canvas.getContext("2d");
+
+const W = canvas.width;
+const H = canvas.height;
+const cx = W / 2;
+const baseY = H * 0.85; // 降低树干位置
+
+let time = 0;
+let tilt = 0;
+
+/* 手机倾斜 */
+window.addEventListener("deviceorientation", e => {
+    if (e.gamma !== null) tilt = e.gamma / 25;
+});
+
+/* 装饰球 & 彩灯 */
+let ornaments = [];
+let lights = [];
+
+function resetDecorations() {
+    ornaments = [];
+    lights = [];
+
+    for (let i = 0; i < 35; i++) {
+        ornaments.push({
+            h: Math.random(),
+            angle: Math.random() * Math.PI * 2,
+            r: 6 + Math.random() * 4,
+            phase: Math.random() * Math.PI * 2,
+            color: `hsl(${Math.random() * 360}, 80%, 60%)`
+        });
+    }
+    for (let i = 0; i < 60; i++) {
+        lights.push({ 
+            h: Math.random(), 
+            phase: i * 0.2,
+            color: `hsl(${i * 10 % 360}, 100%, 70%)`
+        });
+    }
+    
+    // 播放装饰音效
+    playSound('bell');
+}
+
+resetDecorations();
+
+/* 点击装饰球 */
+canvas.addEventListener("click", e => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
+    ornaments.forEach(o => {
+        const y = baseY - o.h * 280;
+        const width = (baseY - y) * 0.7;
+        const sway = Math.sin(time) * 5 + tilt * 12;
+        const x = cx + sway + Math.cos(o.angle) * width * 0.35;
+
+        if (Math.hypot(mx - x, my - y) < o.r + 8) {
+            showRandomBlessing();
+            o.r += 2; // 点击时装饰球变大
+            setTimeout(() => { o.r -= 2; }, 200);
+        }
+    });
+});
+
+/* 绘制圣诞树 - 确保上小下大 */
+function drawTree() {
+    ctx.clearRect(0, 0, W, H);
+    
+    const sway = Math.sin(time) * 5 + tilt * 12;
+    const brightness = 1 + glowBoost * 0.5;
+    
+    // 绘制星星
+    drawStar(cx + sway, 50, brightness);
+    
+    // 绘制树体（上小下大的三角形）
+    const layers = 8;
+    
+    for (let i = 0; i < layers; i++) {
+        const layerHeight = baseY - i * 45;
+        // 上小下大：底层宽度最大，顶层宽度最小
+        const layerWidth = 30 + i * 45;
+        
+        ctx.beginPath();
+        ctx.moveTo(cx + sway, layerHeight - 50);
+        ctx.lineTo(cx - layerWidth / 2 + sway, layerHeight);
+        ctx.lineTo(cx + layerWidth / 2 + sway, layerHeight);
+        ctx.closePath();
+        
+        // 渐变的绿色，下层更亮
+        const greenValue = Math.min(255, (100 + i * 20) * brightness);
+        ctx.fillStyle = `rgb(20, ${greenValue}, 30)`;
+        ctx.fill();
+        
+        // 添加一些纹理
+        ctx.strokeStyle = `rgba(30, ${greenValue + 30}, 50, 0.3)`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+    
+    // 绘制彩灯
+    drawLights(sway);
+    
+    // 绘制装饰球
+    drawOrnaments(sway);
+    
+    // 绘制树干
+    drawTrunk(sway);
+}
+
+function drawStar(x, y, brightness) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(time);
+    ctx.scale(brightness, brightness);
+    
+    // 绘制闪烁的星星
+    const starSize = 12 + Math.sin(time * 3) * 3;
+    
+    ctx.fillStyle = "#FFD700";
+    ctx.shadowColor = "#FFD700";
+    ctx.shadowBlur = 15;
+    
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+        ctx.lineTo(0, -starSize);
+        ctx.rotate(Math.PI / 5);
+        ctx.lineTo(0, -starSize * 0.5);
+        ctx.rotate(Math.PI / 5);
+    }
+    ctx.fill();
+    
+    ctx.restore();
+}
+
+function drawLights(sway) {
+    lights.forEach(l => {
+        const y = baseY - l.h * 280;
+        const width = (baseY - y) * 0.7;
+        const alpha = 0.5 + 0.5 * Math.sin(time * 4 + l.phase);
+        const pulseSize = 3 + Math.sin(time * 5 + l.phase) * 1.5;
+        
+        ctx.beginPath();
+        ctx.arc(cx + sway + Math.sin(l.phase) * width * 0.4, y, pulseSize, 0, Math.PI * 2);
+        
+        // 使用渐变填充
+        const gradient = ctx.createRadialGradient(
+            cx + sway + Math.sin(l.phase) * width * 0.4, y, 0,
+            cx + sway + Math.sin(l.phase) * width * 0.4, y, pulseSize
+        );
+        
+        gradient.addColorStop(0, l.color);
+        gradient.addColorStop(1, `rgba(255, 255, 255, ${alpha * 0.5})`);
+        
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        
+        // 添加光晕效果
+        ctx.shadowColor = l.color;
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+    });
+}
+
+function drawOrnaments(sway) {
+    ornaments.forEach(o => {
+        const y = baseY - o.h * 280;
+        const width = (baseY - y) * 0.7;
+        const x = cx + sway + Math.cos(o.angle) * width * 0.35;
+        const glow = 0.5 + 0.5 * Math.sin(time * 3 + o.phase);
+        
+        // 绘制装饰球
+        ctx.beginPath();
+        ctx.arc(x, y, o.r + glow * 2, 0, Math.PI * 2);
+        
+        // 使用径向渐变创建3D效果
+        const gradient = ctx.createRadialGradient(
+            x - o.r/3, y - o.r/3, 0,
+            x, y, o.r + glow * 2
+        );
+        
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
+        gradient.addColorStop(0.5, o.color);
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
+        
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        
+        // 添加高光
+        ctx.beginPath();
+        ctx.arc(x - o.r/3, y - o.r/3, o.r/3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+        ctx.fill();
+        
+        // 添加阴影效果
+        ctx.shadowColor = o.color;
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+    });
+}
+
+function drawTrunk(sway) {
+    // 绘制树干
+    ctx.fillStyle = "#8B5A2B";
+    ctx.fillRect(cx - 15 + sway, baseY, 30, 60);
+    
+    // 添加树干纹理
+    ctx.fillStyle = "#654321";
+    for (let i = 0; i < 3; i++) {
+        ctx.fillRect(cx - 10 + sway, baseY + 10 + i * 15, 20, 5);
+    }
+}
+
+/* ================= CSS雪花和星星效果 ================= */
+function createSnowflakes() {
+    const snowflakeCount = 30;
+    for (let i = 0; i < snowflakeCount; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.className = 'snowflake';
+        snowflake.innerHTML = '❄️';
+        snowflake.style.left = Math.random() * 100 + 'vw';
+        snowflake.style.animationDuration = Math.random() * 3 + 5 + 's';
+        snowflake.style.animationDelay = Math.random() * 5 + 's';
+        snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+        snowflake.style.fontSize = Math.random() * 0.5 + 0.8 + 'rem';
+        document.body.appendChild(snowflake);
+    }
+}
+
+function createStars() {
+    const starCount = 15;
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.innerHTML = '✨';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = Math.random() * 100 + 'vh';
+        star.style.fontSize = Math.random() * 0.5 + 1 + 'rem';
+        star.style.animationDuration = Math.random() * 1 + 0.5 + 's';
+        star.style.animationDelay = Math.random() * 2 + 's';
+        document.body.appendChild(star);
+    }
+}
+
+function addSparkles() {
+    // 添加一些额外的星光效果
+    for (let i = 0; i < 10; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'star';
+        sparkle.innerHTML = '✨';
+        sparkle.style.left = Math.random() * 100 + 'vw';
+        sparkle.style.top = Math.random() * 100 + 'vh';
+        sparkle.style.fontSize = Math.random() * 0.8 + 0.5 + 'rem';
+        sparkle.style.animationDuration = Math.random() * 0.8 + 0.3 + 's';
+        sparkle.style.opacity = 0.7;
+        document.body.appendChild(sparkle);
+        
+        // 3秒后移除
+        setTimeout(() => {
+            if (sparkle.parentNode) {
+                sparkle.remove();
+            }
+        }, 3000);
+    }
+    
+    // 播放音效
+    playSound('pop');
+}
+
+/* ================= 动画循环 ================= */
+let glowBoost = 0;
+
+function animate() {
+    time += 0.016;
+    glowBoost *= 0.96;
+    drawTree();
+    requestAnimationFrame(animate);
+}
+animate();
+
+// 初始化
+window.onload = function() {
+    createSnowflakes();
+    createStars();
+    
+    // 让标题闪烁
+    const title = document.querySelector('.title');
+    setInterval(() => {
+        title.classList.toggle('twinkle');
+    }, 1500);
+    
+    // 初始显示一条随机祝福
+    setTimeout(() => {
+        showRandomBlessing();
+    }, 1000);
+    
+    // 添加键盘支持
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'b' || event.key === 'B') {
+            showAllBlessings();
+        } else if (event.key === 'd' || event.key === 'D') {
+            resetDecorations();
+        } else if (event.key === 's' || event.key === 'S') {
+            addSparkles();
+        }
+    });
+};
+</script>
+</body>
+</html>
